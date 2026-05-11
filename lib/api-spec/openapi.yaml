@@ -1,0 +1,351 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: API specification
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: physics
+    description: Physics visualization operations
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  /classify:
+    post:
+      operationId: classifyQuery
+      tags: [physics]
+      summary: Classify a physics query
+      description: Uses LLM to classify the query into a physics visualization intent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClassifyInput"
+      responses:
+        "200":
+          description: Classification result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueryIntent"
+
+  /generate-question:
+    post:
+      operationId: generateQuestion
+      tags: [physics]
+      summary: Generate a similar physics question
+      description: Uses LLM to generate a new example question within a given category
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GenerateQuestionInput"
+      responses:
+        "200":
+          description: Generated question
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneratedQuestion"
+
+  /visualize/matplotlib:
+    post:
+      operationId: visualizeMatplotlib
+      tags: [physics]
+      summary: Generate a Matplotlib visualization
+      description: Generates a physics plot using Matplotlib, returns base64 PNG
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VisualizeInput"
+      responses:
+        "200":
+          description: Matplotlib output
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MatplotlibOutput"
+
+  /visualize/recharts:
+    post:
+      operationId: visualizeRecharts
+      tags: [physics]
+      summary: Generate a Recharts data configuration
+      description: Returns structured JSON data and chart config for Recharts rendering
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VisualizeInput"
+      responses:
+        "200":
+          description: Recharts output
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RechartsOutput"
+
+  /visualize/d3:
+    post:
+      operationId: visualizeD3
+      tags: [physics]
+      summary: Generate a D3.js SVG visualization
+      description: Returns SVG string or structured JSON for D3 diagram rendering
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VisualizeInput"
+      responses:
+        "200":
+          description: D3 output
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/D3Output"
+
+  /visualize/manim:
+    post:
+      operationId: visualizeManim
+      tags: [physics]
+      summary: Generate a Manim script
+      description: Returns a Manim Python script for the given physics query
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VisualizeInput"
+      responses:
+        "200":
+          description: Manim output
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ManimOutput"
+
+  /visualize/google-image:
+    post:
+      operationId: visualizeGoogleImage
+      tags: [physics]
+      summary: Generate a Google AI image
+      description: Returns a textbook-style AI-generated image via Gemini
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VisualizeInput"
+      responses:
+        "200":
+          description: Google image output
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GoogleImageOutput"
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+
+    ClassifyInput:
+      type: object
+      required:
+        - query
+      properties:
+        query:
+          type: string
+          description: The physics question or query to classify
+        imageContext:
+          type: ["string", "null"]
+          description: Base64-encoded image (with or without data URL prefix) providing visual context
+
+    QueryIntent:
+      type: object
+      required:
+        - query_intent
+        - physics_concept
+        - visual_type
+        - recommended_frameworks
+        - requires_animation
+        - requires_numeric_data
+      properties:
+        query_intent:
+          type: string
+          description: The classified intent category identifier
+        physics_concept:
+          type: string
+          description: The core physics concept involved
+        visual_type:
+          type: string
+          description: The best visual type to use
+        recommended_frameworks:
+          type: array
+          items:
+            type: string
+          description: List of recommended framework identifiers
+        requires_animation:
+          type: boolean
+        requires_numeric_data:
+          type: boolean
+
+    GenerateQuestionInput:
+      type: object
+      required:
+        - categoryId
+      properties:
+        categoryId:
+          type: string
+          description: The category ID to generate a question for
+        exampleQuestion:
+          type: string
+          description: Optional example question to base the new question on
+
+    GeneratedQuestion:
+      type: object
+      required:
+        - question
+      properties:
+        question:
+          type: string
+
+    VisualizeInput:
+      type: object
+      required:
+        - query
+        - intent
+      properties:
+        query:
+          type: string
+        intent:
+          $ref: "#/components/schemas/QueryIntent"
+        imageContext:
+          type: ["string", "null"]
+          description: Base64-encoded image for context (graph/diagram the user is asking about)
+
+    MatplotlibOutput:
+      type: object
+      required:
+        - imageBase64
+        - suitable
+      properties:
+        imageBase64:
+          type: ["string", "null"]
+          description: Base64-encoded PNG image
+        suitable:
+          type: boolean
+        note:
+          type: ["string", "null"]
+        renderTimeMs:
+          type: ["number", "null"]
+
+    RechartsOutput:
+      type: object
+      required:
+        - suitable
+      properties:
+        chartType:
+          type: ["string", "null"]
+          description: e.g. line, bar, area
+        data:
+          type: ["array", "null"]
+          items:
+            type: object
+          description: Array of data points
+        xKey:
+          type: ["string", "null"]
+        yKeys:
+          type: ["array", "null"]
+          items:
+            type: string
+        colors:
+          type: ["array", "null"]
+          items:
+            type: string
+        xLabel:
+          type: ["string", "null"]
+        yLabel:
+          type: ["string", "null"]
+        title:
+          type: ["string", "null"]
+        suitable:
+          type: boolean
+        note:
+          type: ["string", "null"]
+
+    D3Output:
+      type: object
+      required:
+        - suitable
+      properties:
+        svgContent:
+          type: ["string", "null"]
+          description: SVG markup string
+        diagramType:
+          type: ["string", "null"]
+        suitable:
+          type: boolean
+        note:
+          type: ["string", "null"]
+
+    ManimOutput:
+      type: object
+      required:
+        - suitable
+      properties:
+        script:
+          type: ["string", "null"]
+          description: Manim Python script
+        sceneClass:
+          type: ["string", "null"]
+        animatedSvg:
+          type: ["string", "null"]
+          description: CSS-animated SVG preview of the physics motion
+        suitable:
+          type: boolean
+        note:
+          type: ["string", "null"]
+
+    GoogleImageOutput:
+      type: object
+      required:
+        - suitable
+      properties:
+        imageBase64:
+          type: ["string", "null"]
+          description: Base64-encoded image
+        mimeType:
+          type: ["string", "null"]
+        suitable:
+          type: boolean
+        note:
+          type: ["string", "null"]

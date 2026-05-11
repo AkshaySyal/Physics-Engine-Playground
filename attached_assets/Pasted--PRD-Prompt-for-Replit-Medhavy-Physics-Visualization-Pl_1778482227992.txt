@@ -1,0 +1,641 @@
+
+
+PRD Prompt for Replit: Medhavy Physics Visualization Playground
+Build a modern web application called Medhavy Physics Visualization Playground.
+The purpose of this application is to help us determine mappings between:
+physics concepts / user queries → appropriate visualization types → best rendering framework
+This app will be used by professors and researchers to compare different visualization frameworks for physics education.
+The system should not only generate graph plots. It should support:
+plots
+vector diagrams
+free-body diagrams
+conceptual illustrations
+animations
+textbook-style physics visuals
+This is a research/demo platform for the Medhavy AI / OpenStax University Physics Volume 1 project.
+
+1. Core Product Goal
+Given a physics user query, the app should:
+classify the query into a physics visualization category
+determine which visualization frameworks are appropriate
+generate only plot/diagram/visual outputs, not long textual answers
+render outputs side-by-side across selected frameworks
+allow professors to compare which framework creates the clearest educational visual
+The app should focus on visualization quality, not final answer explanation.
+
+2. Input Dataset Context
+The app should use the following dataset examples as references.
+These examples are located in Google Drive:
+Folder path:
+Medhavi AI → Physics QA Datasets → Diagram-based Answer
+There are 4 chapter folders and 9 total question-answer image pairs.
+Use these as seed examples for query categories, visualization taxonomy, and hardcoded demo questions.
+
+3. Dataset File Links
+Chapter: Chapter_5_Newton_laws_of_motion_3
+Question 55
+Question image:
+https://drive.google.com/file/d/1vwgFmluMm6w8BfxocWPztgZDu32LXNRY/view?usp=drivesdk
+Answer image:
+https://drive.google.com/file/d/1OwKeQZWoxzfktC2YoI28s6gL4-el1IeR/view?usp=drivesdk
+Expected visualization category:
+Free-body diagram
+Force balance diagram
+Vector decomposition diagram
+Relevant concepts:
+pulley system
+tension
+force on foot
+weight
+angle decomposition
+equilibrium
+
+Question 65
+Question image:
+https://drive.google.com/file/d/1dUHwJ6a7vNQQv7UvMc1rcue92cQruYiT/view?usp=drivesdk
+Answer image:
+https://drive.google.com/file/d/1nY2LvFVuDcw_6VXF896iJexuV0UKBnvY/view?usp=drivesdk
+Expected visualization category:
+Free-body diagram
+Newton’s laws diagram
+Force decomposition / force balance
+Relevant concepts:
+forces
+acceleration
+Newton’s second law
+applied force
+normal force
+friction, if applicable
+
+Question 71
+Question image:
+https://drive.google.com/file/d/1ahnJ79U6Z_0QbG_xcc-EoaxfrhjqT7Ub/view?usp=drivesdk
+Answer image:
+https://drive.google.com/file/d/1nQZ-Dpj381VcMZpZJ3xX_fNBQOugzuXe/view?usp=drivesdk
+Expected visualization category:
+Free-body diagram
+Force system diagram
+Vector decomposition
+Relevant concepts:
+Newton’s laws
+force components
+equilibrium or acceleration
+tension / applied forces depending on question image
+
+Chapter: Chapter_16_Waves_1
+Question 27
+Question image:
+https://drive.google.com/file/d/1CwIhwRd4wn6MWYWRq8QHBoPi1WZs8OQS/view?usp=drivesdk
+Answer image:
+https://drive.google.com/file/d/1FSEZywYB5TlqFectHaECY01L2AHdSUFb/view?usp=drivesdk
+Expected visualization category:
+Wave diagram
+Wave plot
+Oscillation / sinusoidal visualization
+Relevant concepts:
+wavelength
+amplitude
+frequency
+wave speed
+sinusoidal wave
+wave behavior
+
+Chapter: Chapter_11_Angular_Momentum_1
+Question 95
+Question image:
+https://drive.google.com/file/d/1vxDpBPm_tVXtVqs-UejB0Ln8U74Iq8ig/view?usp=drivesdk
+Answer image:
+https://drive.google.com/file/d/1GEMVFLcwLO1SYaOmLKrYYtafDcfjzpfP/view?usp=drivesdk
+Expected visualization category:
+Angular momentum diagram
+Rotational motion diagram
+Torque / lever arm diagram
+Vector direction diagram
+Relevant concepts:
+angular momentum
+rotation
+torque
+moment arm
+direction of vectors
+right-hand rule, if applicable
+
+Chapter: Chapter_3_Motion_along_a_straight_line_4
+Question 31
+Question image:
+https://drive.google.com/file/d/1hdx84Tx-Sdu4qXcnW40qnt5nQwE7Nh4x/view?usp=drivesdk
+Answer image:
+https://drive.google.com/file/d/1N0Lx8aDbStDaysPJ-LtJvLJWt7_qRyqS/view?usp=drivesdk
+Expected visualization category:
+Kinematics plot
+Position-time / velocity-time / acceleration-time graph
+Motion along one dimension
+Relevant concepts:
+position
+displacement
+velocity
+acceleration
+time graph
+slope interpretation
+
+Question 33
+Question image:
+https://drive.google.com/file/d/1zlpmKrCaluyWdRyWTPWBp99Nrxe167hA/view?usp=drivesdk
+Answer image:
+https://drive.google.com/file/d/1tKjRvTDkAoAcuDWINT_DtN20cHtpeuGg/view?usp=drivesdk
+Expected visualization category:
+Kinematics plot
+Motion graph interpretation
+Position/velocity/acceleration graph
+Relevant concepts:
+straight-line motion
+time-series graph
+slope
+area under curve
+velocity and acceleration relationship
+
+Question 39
+Question image:
+https://drive.google.com/file/d/1BladmBUNkw77liLkDNQqLk2lvU0PUf64/view?usp=drivesdk
+Answer image:
+https://drive.google.com/file/d/1PEfbwnjg-p5gBSiIE9YM0BwL4WD6tAAq/view?usp=drivesdk
+Expected visualization category:
+Kinematics plot
+Motion graph
+Graph transformation / interpretation
+Relevant concepts:
+velocity
+acceleration
+displacement
+slope
+area under graph
+
+Question 47
+Question image:
+https://drive.google.com/file/d/13OqynRSxhAz-UCVMxa6PzyCspjmtCOe9/view?usp=drivesdk
+Answer image:
+https://drive.google.com/file/d/15L6trqPmQ-FkGrX-ohWNidsXxsegItMV/view?usp=drivesdk
+Expected visualization category:
+Kinematics plot
+Motion along straight line
+Time-series comparison
+Relevant concepts:
+one-dimensional motion
+position/velocity/acceleration vs time
+graph interpretation
+displacement and slope
+
+4. Required Visualization Taxonomy
+Implement the following query-category taxonomy.
+The app should show these categories as clickable cards on the homepage.
+Each category should include:
+category title
+description
+3–5 hardcoded example questions
+button to generate a similar question
+recommended visualization types
+recommended frameworks
+
+Category 1: Free-Body / Force Balance Diagrams
+Use when the query asks about:
+forces on an object
+tension
+normal force
+friction
+pulleys
+inclined planes
+suspended objects
+equilibrium
+Example queries:
+“Draw the free-body diagram for a pulley with two angled tensions.”
+“Show all forces acting on a block on an inclined plane.”
+“Explain the tension forces in this pulley system.”
+“Show why the horizontal force is (2T\cos\theta).”
+Recommended visual outputs:
+free-body diagram
+force arrow diagram
+equilibrium diagram
+vector decomposition overlay
+Recommended frameworks:
+D3.js
+Google image-generation model
+Manim if animation is useful
+
+Category 2: Vector Decomposition Diagrams
+Use when the query asks about:
+resolving vectors into components
+horizontal/vertical components
+angled tension
+resultant force
+sine/cosine relationships
+Example queries:
+“Break this angled force into x and y components.”
+“Show why the horizontal component is (T\cos\theta).”
+“Visualize how two angled tensions combine into one net force.”
+“Show the resultant force from two vectors.”
+Recommended visual outputs:
+component diagram
+coordinate-axis overlay
+resultant vector diagram
+Recommended frameworks:
+D3.js
+Google image-generation model
+Manim
+
+Category 3: Motion / Kinematics Plots
+Use when the query asks about:
+position vs time
+velocity vs time
+acceleration vs time
+constant acceleration
+graph interpretation
+motion along a line
+Example queries:
+“Plot position, velocity, and acceleration for constant acceleration.”
+“Show how velocity changes over time for straight-line motion.”
+“Visualize the relationship between slope and velocity.”
+“Compare position-time graphs for different initial velocities.”
+Recommended visual outputs:
+(x(t)) plot
+(v(t)) plot
+(a(t)) plot
+multi-curve comparison
+Recommended frameworks:
+Matplotlib
+Recharts
+D3.js
+
+Category 4: Projectile / Trajectory Plots
+Use when the query asks about:
+projectile motion
+launch angle
+range
+maximum height
+initial velocity
+2D motion
+Example queries:
+“Compare projectile trajectories for 30°, 45°, and 60°.”
+“Show how launch angle affects range.”
+“Plot the path of a projectile launched at 20 m/s.”
+“Visualize maximum height and horizontal range.”
+Recommended visual outputs:
+2D trajectory plot
+multi-angle comparison plot
+annotated trajectory diagram
+Recommended frameworks:
+Matplotlib
+Recharts
+D3.js
+Manim for animation
+
+Category 5: Circular Motion / Rotation Diagrams
+Use when the query asks about:
+circular motion
+centripetal acceleration
+torque
+angular velocity
+angular momentum
+right-hand rule
+Example queries:
+“Show velocity and acceleration vectors in circular motion.”
+“Visualize the direction of angular momentum.”
+“Explain torque using a lever-arm diagram.”
+“Show how centripetal acceleration points toward the center.”
+Recommended visual outputs:
+circular motion diagram
+radial/tangential vector diagram
+torque diagram
+angular momentum direction diagram
+Recommended frameworks:
+D3.js
+Manim
+Google image-generation model
+
+Category 6: Energy Conservation Visuals
+Use when the query asks about:
+kinetic energy
+potential energy
+total mechanical energy
+work-energy theorem
+energy transfer
+springs
+Example queries:
+“Show how kinetic and potential energy change during motion.”
+“Visualize energy conservation for a mass-spring system.”
+“Compare gravitational potential energy and kinetic energy.”
+“Show an energy bar chart for a falling object.”
+Recommended visual outputs:
+energy bar chart
+energy-vs-position graph
+energy transfer diagram
+Recommended frameworks:
+Recharts
+D3.js
+Matplotlib
+Manim for animation
+
+Category 7: Oscillation / SHM Visuals
+Use when the query asks about:
+springs
+pendulums
+amplitude
+period
+frequency
+sinusoidal motion
+simple harmonic motion
+Example queries:
+“Plot displacement, velocity, and acceleration for simple harmonic motion.”
+“Show a mass-spring oscillator.”
+“Visualize how amplitude affects oscillation.”
+“Compare oscillations for different spring constants.”
+Recommended visual outputs:
+sinusoidal time graph
+phase diagram
+spring-mass animation
+parameter comparison plot
+Recommended frameworks:
+Matplotlib
+Recharts
+D3.js
+Manim
+
+Category 8: Wave Visualizations
+Use when the query asks about:
+waves
+wavelength
+amplitude
+frequency
+wave speed
+interference
+standing waves
+Example queries:
+“Show how wavelength and amplitude are labeled on a wave.”
+“Visualize a standing wave with nodes and antinodes.”
+“Plot two waves interfering.”
+“Show how frequency changes the shape of a wave.”
+Recommended visual outputs:
+sinusoidal wave plot
+standing wave diagram
+interference plot
+animated wave propagation
+Recommended frameworks:
+Matplotlib
+Recharts
+D3.js
+Manim
+
+Category 9: Diagram Interpretation / Annotation
+Use when the query asks about:
+an uploaded figure
+textbook diagram explanation
+identifying relevant objects
+annotating arrows/components
+extracting free-body diagram from an existing image
+Example queries:
+“Explain this diagram.”
+“Which object should I isolate for the free-body diagram?”
+“Highlight the forces acting on pulley 4.”
+“Annotate the key vectors in this figure.”
+Recommended visual outputs:
+annotated diagram
+highlighted region
+extracted subdiagram
+labeled overlay
+Recommended frameworks:
+Google image-generation model
+D3/SVG overlay
+canvas overlay
+
+Category 10: Parameter Comparison Visuals
+Use when the query asks about:
+“what happens if…”
+comparing multiple parameter values
+sliders
+sensitivity analysis
+variation with mass, angle, speed, frequency, etc.
+Example queries:
+“Compare projectile range for different launch angles.”
+“Show how spring constant affects oscillation.”
+“What happens to wave speed if tension increases?”
+“Compare motion for different acceleration values.”
+Recommended visual outputs:
+multi-line plot
+comparison table
+slider-based interactive chart
+bar chart summary
+Recommended frameworks:
+Recharts
+D3.js
+Matplotlib
+
+5. Frameworks to Support
+The app must support the following 5 visualization/rendering frameworks:
+Matplotlib
+Recharts
+D3.js
+Manim
+Google image-generation model, such as Gemini Flash image generation or equivalent
+Use judgment: not every framework should generate every visual type.
+For example:
+Matplotlib is good for plots, not polished free-body diagrams.
+Recharts is good for interactive charts, not free-body diagrams.
+D3.js is good for SVG-based diagrams and browser-native visuals.
+Manim is good for polished animations.
+Google image generation is good for textbook-like diagrams, free-body diagrams, and conceptual illustrations.
+
+6. Framework Selection UI
+The UI must allow the user to select or deselect visualization frameworks.
+By default, all frameworks should be selected.
+The professor should be able to compare:
+all 5 frameworks
+only 2 selected frameworks
+only one framework
+For each submitted query, the app should generate only outputs for selected frameworks that are appropriate for the detected visualization category.
+If a selected framework is unsuitable, show a clear placeholder card:
+“Not suitable for this visualization type.”
+
+7. Output Requirements
+For every submitted query, produce visual outputs only.
+Do not generate long text explanations.
+Each output card should contain:
+framework name
+visualization type
+rendered visual
+generation status
+short one-line note if needed
+rendering time if available
+The comparison layout should be side-by-side.
+Example:
+Query: Compare projectile trajectories for 30°, 45°, and 60°
+
+[Matplotlib Output] [Recharts Output] [D3 Output]
+
+[Manim Output] [Google Image Output / Not Suitable]
+
+
+8. Query Generation Feature
+Each category card should have:
+hardcoded example questions
+“Generate Similar Question” button
+When clicked, the app should use the LLM to generate a new question similar to that category.
+Requirements:
+stay within same category
+use realistic physics language
+include parameters when useful
+produce questions suitable for visualization
+Example:
+Category: Projectile Motion
+Hardcoded question:
+“Compare projectile trajectories for 30°, 45°, and 60°.”
+Generated similar question:
+“Plot projectile trajectories for launch speeds of 10 m/s, 20 m/s, and 30 m/s at a fixed angle of 45°.”
+
+9. Visual Generation Pipeline
+When a query is submitted:
+Step 1: Classify Intent
+Classify into schema:
+{
+  "query_intent": "force_balance",
+  "physics_concept": "pulley tension",
+  "visual_type": "free_body_diagram",
+  "recommended_frameworks": ["d3", "google_image_generation"],
+  "requires_animation": false,
+  "requires_numeric_data": false
+}
+
+Step 2: Select Frameworks
+Intersect:
+frameworks selected by user
+frameworks appropriate for detected visualization type
+Step 3: Generate Visuals
+Generate the output independently for each framework.
+Step 4: Render Comparison
+Render outputs in comparison grid.
+
+10. Framework-Specific Implementation Guidance
+Matplotlib
+Use for:
+kinematics plots
+trajectory plots
+wave plots
+oscillation plots
+energy curves
+Return:
+image file
+base64 PNG
+SVG
+Avoid for:
+complex free-body diagrams unless simple
+
+Recharts
+Use for:
+browser-native interactive plots
+line charts
+bar charts
+parameter comparisons
+energy bar charts
+Return:
+structured JSON data
+chart configuration
+
+D3.js
+Use for:
+vector diagrams
+free-body diagrams
+custom SVG diagrams
+annotated force diagrams
+conceptual diagrams
+Return:
+SVG elements or structured JSON for D3 rendering
+
+Manim
+Use for:
+animations
+wave propagation
+circular motion
+oscillations
+projectile motion animation
+force decomposition animation
+Return:
+MP4 or GIF if rendering is available
+otherwise generated Manim script preview
+mark status as async if rendering takes time
+
+Google Image Generation Model
+Use for:
+textbook-style diagrams
+free-body diagrams
+conceptual illustrations
+annotated visual explanations
+Return:
+generated image
+image URL or base64
+Prompt requirements:
+clean textbook style
+white or dark scientific background
+labeled force arrows
+correct physics notation
+minimal clutter
+educational clarity
+
+11. UI Requirements
+The app should have:
+Homepage
+title: Medhavy Physics Visualization Playground
+subtitle: Compare visualization frameworks for physics learning
+category cards
+framework selector panel
+query input box
+Category Cards
+Each card should show:
+category name
+description
+example questions
+generate similar question button
+Comparison View
+Each framework gets a card:
+framework name
+visual output
+status
+one-line note
+Design
+Use:
+React
+TypeScript
+Tailwind
+dark scientific theme
+clean typography
+professor-demo friendly layout
+
+12. Non-Functional Requirements
+The app should be:
+demo-ready
+visually polished
+responsive
+easy to use
+robust to unsupported framework/category combinations
+extensible for more categories later
+It does not need:
+authentication
+production-grade user management
+complex payments
+long-term analytics
+
+13. Important Research Framing
+This application exists to answer:
+Which visualization framework produces the most useful educational visual for a given physics query type?
+Therefore, prioritize:
+comparison
+controllable framework selection
+query-category taxonomy
+visual clarity
+easy demo flow
+
+14. Expected Deliverable
+Build a working deployed web app that lets professors:
+choose a physics query category
+select a hardcoded example or generate a similar question
+select visualization frameworks
+submit the query
+compare visual outputs side-by-side
+The output should make it easy to decide whether Matplotlib, Recharts, D3.js, Manim, or Google image generation is best for that physics visualization category.
+
